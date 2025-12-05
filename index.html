@@ -49,6 +49,8 @@
             font-size: 22px;
             letter-spacing: 0.12em;
             text-transform: uppercase;
+            z-index: 11;
+            position: relative;
         }
 
         .logo span {
@@ -81,6 +83,80 @@
         .nav-links a:hover::after,
         .nav-links a.active::after {
             width: 100%;
+        }
+
+        /* БУРГЕР-МЕНЮ */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 11;
+            position: relative;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--dark);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9;
+        }
+
+        .nav-overlay.active {
+            display: block;
+        }
+
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: rgba(246, 241, 233, 0.98);
+            backdrop-filter: blur(8px);
+            flex-direction: column;
+            gap: 0;
+            z-index: 9;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .nav-mobile.active {
+            display: flex;
+        }
+
+        .nav-mobile a {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            text-transform: uppercase;
         }
 
         .btn-primary {
@@ -315,6 +391,26 @@
             color: var(--dark);
         }
 
+        /* АДАПТИВНАЯ КАРТА */
+        .map-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+        }
+
         footer {
             border-top: 1px solid rgba(0,0,0,0.06);
             padding: 16px 0 22px;
@@ -355,44 +451,136 @@
         }
 
         @media (max-width: 900px) {
+            body {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
             .hero,
             .about,
             .contacts {
                 grid-template-columns: 1fr;
+                gap: 24px;
             }
 
             .hero {
-                padding-top: 32px;
+                padding: 32px 0 24px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
             }
 
             .hero-photo {
                 min-height: 220px;
-            }
-
-            .nav-links {
-                display: none;
+                order: -1;
             }
 
             .grid-3,
             .portfolio-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
+            .section-head {
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            /* Показываем бургер-меню */
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
         }
 
         @media (max-width: 640px) {
+            body {
+                font-size: 14px;
+            }
+
+            .hero {
+                padding-top: 24px;
+            }
+
+            .hero-title {
+                font-size: 26px;
+            }
+
+            .hero-subtitle {
+                font-size: 13px;
+            }
+
+            .hero-tags {
+                gap: 6px;
+            }
+
+            .tag {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+
             .grid-3,
             .portfolio-grid {
                 grid-template-columns: 1fr;
             }
 
+            .card {
+                padding: 14px 14px 16px;
+            }
+
             .section-head {
                 flex-direction: column;
                 gap: 8px;
-                align-items: flex-start;
             }
 
+            header .nav {
+                padding: 10px 0;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-mobile a {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+
+            section {
+                padding: 32px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
             .hero-title {
-                font-size: 32px;
+                font-size: 22px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .tag {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
+
+            .card {
+                padding: 12px 12px 14px;
+            }
+
+            section {
+                padding: 24px 0;
             }
         }
     </style>
@@ -403,12 +591,25 @@
         <div class="logo"><span>Золотая</span> нить</div>
         <nav class="nav-links">
             <a href="#services">Услуги</a>
-            <a href="#portfolio">Портфолио</a>
+            <a href="#portfolio">Почему мы</a>
             <a href="#about">О нас</a>
             <a href="#contacts">Контакты</a>
         </nav>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+    <nav class="nav-mobile" id="navMobile">
+        <a href="#services">Услуги</a>
+        <a href="#portfolio">Почему мы</a>
+        <a href="#about">О нас</a>
+        <a href="#contacts">Контакты</a>
+    </nav>
 </header>
+
+<div class="nav-overlay" id="navOverlay"></div>
 
 <main>
     <!-- HERO -->
@@ -468,7 +669,8 @@
             </div>
         </div>
     </section>
-<!-- КАК ДОБРАТЬСЯ -->
+
+    <!-- КАК ДОБРАТЬСЯ -->
     <section id="route">
         <div class="container">
             <div class="section-head">
@@ -503,16 +705,15 @@
 
                 <div class="contact-info">
                     <p class="contact-label">Карта:</p>
-                    <!-- сюда позже можно вставить iframe карты -->
-                    <div style="border-radius:12px; overflow:hidden;">
-    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A73adfa63d458fe77f608e65c54ce64c213c72976f3959915b790c7b8792dcf4f&amp;source=constructor" width="421" height="341" frameborder="0"></iframe>
-</div>
-
+                    <div class="map-container">
+                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A73adfa63d458fe77f608e65c54ce64c213c72976f3959915b790c7b8792dcf4f&source=constructor" frameborder="0"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-        <!-- ПРЕИМУЩЕСТВА -->
+
+    <!-- ПРЕИМУЩЕСТВА -->
     <section id="portfolio">
         <div class="container">
             <div class="section-head">
@@ -549,8 +750,6 @@
             </div>
         </div>
     </section>
-
-    
 
     <!-- О НАС -->
     <section id="about">
@@ -596,7 +795,7 @@
                     </p>
                     <p>
                         <span class="contact-label">Время работы:</span><br />
-                        <span class="contact-value">Пн–Сб, 10:00–19:00<br />Вс — выходной</span>
+                        <span class="contact-value">Пн–Сб, 8:00–17:00<br />Пн — выходной</span>
                     </p>
                 </div>
 
@@ -624,6 +823,33 @@
 </footer>
 
 <script>
+    // Бургер-меню
+    const menuToggle = document.getElementById('menuToggle');
+    const navMobile = document.getElementById('navMobile');
+    const navOverlay = document.getElementById('navOverlay');
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMobile.classList.toggle('active');
+        navOverlay.classList.toggle('active');
+    });
+
+    // Закрытие меню при клике на ссылку
+    navMobile.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMobile.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+    });
+
+    // Закрытие меню при клике на фон
+    navOverlay.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navMobile.classList.remove('active');
+        navOverlay.classList.remove('active');
+    });
+
     // Smooth scroll для навигационных ссылок
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
@@ -640,7 +866,7 @@
             const rect = section.getBoundingClientRect();
             if (rect.top <= 100) current = section.getAttribute('id');
         });
-        document.querySelectorAll('.nav-links a').forEach(a => {
+        document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
             a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
         });
 
