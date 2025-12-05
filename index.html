@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Золотая нить — швейное ателье в Борисове</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --bg: #f6f1e9;
+            --dark: #22252b;
+            --accent: #c6a36a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(246, 241, 233, 0.97);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+        }
+
+        .logo {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-size: 22px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(0.95);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 40px;
+            padding: 60px 0 40px;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-size: 42px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            max-width: 440px;
+            margin-bottom: 24px;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tag {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.6);
+        }
+
+        .hero-photo {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 260px;
+            background:
+                linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.1)),
+                url("https://images.pexels.com/photos/4481906/pexels-photo-4481906.jpeg?auto=compress&cs=tinysrgb&w=1200") center/cover no-repeat;
+        }
+
+        .hero-photo-badge {
+            position: absolute;
+            right: 18px;
+            bottom: 18px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(246, 241, 233, 0.92);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        section {
+            padding: 40px 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-size: 26px;
+        }
+
+        .section-sub {
+            font-size: 14px;
+            max-width: 360px;
+            color: rgba(0,0,0,0.7);
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 18px;
+            padding: 18px 18px 20px;
+            border: 1px solid rgba(0,0,0,0.04);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .card.fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .card-title {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: rgba(0,0,0,0.75);
+        }
+
+        .pill {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(0,0,0,0.6);
+            margin-bottom: 8px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 16px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            min-height: 170px;
+            background: #ddd;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .portfolio-item.fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .portfolio-item span {
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .about {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 32px;
+        }
+
+        .about-photo {
+            border-radius: 22px;
+            min-height: 200px;
+            background:
+                linear-gradient(135deg, rgba(198,163,106,0.2), rgba(0,0,0,0.5)),
+                url("https://images.pexels.com/photos/3738087/pexels-photo-3738087.jpeg?auto=compress&cs=tinysrgb&w=1200") center/cover no-repeat;
+        }
+
+        .about-list {
+            list-style: none;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .about-list li {
+            margin-bottom: 6px;
+        }
+
+        .about-list li::before {
+            content: "• ";
+            color: var(--accent);
+        }
+
+        .contacts {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 24px;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.9);
+            border-radius: 18px;
+            padding: 24px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .contact-info p {
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(0,0,0,0.6);
+        }
+
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        footer {
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding: 16px 0 22px;
+            font-size: 12px;
+            color: rgba(0,0,0,0.7);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        @keyframes fadeIn {
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero,
+            .about,
+            .contacts {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 32px;
+            }
+
+            .hero-photo {
+                min-height: 220px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .grid-3,
+            .portfolio-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-3,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container nav">
+        <div class="logo"><span>Золотая</span> нить</div>
+        <nav class="nav-links">
+            <a href="#services">Услуги</a>
+            <a href="#portfolio">Портфолио</a>
+            <a href="#about">О нас</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <!-- HERO -->
+    <section>
+        <div class="container hero">
+            <div>
+                <h1 class="hero-title">Швейное ателье премиум‑класса в Борисове</h1>
+                <p class="hero-subtitle">
+                    Индивидуальный пошив, ремонт и переделка одежды с идеальной посадкой. Работаем с премиальными тканями и гарантируем качество каждого шва.
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">Пошив на заказ</span>
+                    <span class="tag">Ремонт и подгонка</span>
+                    <span class="tag">Свадебные и вечерние</span>
+                </div>
+            </div>
+            <div class="hero-photo">
+                <div class="hero-photo-badge">Опыт 15+ лет</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- УСЛУГИ -->
+    <section id="services">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">Услуги ателье</h2>
+                </div>
+                <p class="section-sub">
+                    Подбираем решение под каждую фигуру и задачу: от лёгкого ремонта до полного пошива образа с нуля.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <div class="pill">Индивидуальный пошив</div>
+                    <h3 class="card-title">Платья и костюмы по меркам</h3>
+                    <p class="card-text">
+                        Разработка лекал, подбор ткани, примерки и финальная посадка с учётом ваших пожеланий.
+                    </p>
+                </article>
+                <article class="card">
+                    <div class="pill">Ремонт</div>
+                    <h3 class="card-title">Подгонка и реставрация</h3>
+                    <p class="card-text">
+                        Укоротим, ушьём, заменим молнию или подкладку, аккуратно обновим любимые вещи.
+                    </p>
+                </article>
+                <article class="card">
+                    <div class="pill">Особые случаи</div>
+                    <h3 class="card-title">Свадебные и вечерние образы</h3>
+                    <p class="card-text">
+                        Создание нарядов для особых событий, работа с деликатными тканями и сложным декором.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+<!-- КАК ДОБРАТЬСЯ -->
+    <section id="route">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">Как добраться</h2>
+                <p class="section-sub">
+                    Ателье «Золотая нить» находится в историческом районе Старый город в Борисове, рядом с ул. Дзержинского.
+                    Удобно добираться пешком из центра или на общественном транспорте.
+                </p>
+            </div>
+
+            <div class="contacts">
+                <div class="contact-info">
+                    <p>
+                        <span class="contact-label">Адрес для навигатора:</span><br />
+                        <span class="contact-value">г. Борисов, ул. Дзержинского 79, Старый город</span>
+                    </p>
+                    <p>
+                        <span class="contact-label">Ориентиры:</span><br />
+                        <span class="card-text">
+                            Старый город. В пешей доступности от князя Бориса. 
+                            Удобный подъезд на автомобиле.
+                        </span>
+                    </p>
+                    <p>
+                        <span class="contact-label">Общественный транспорт:</span><br />
+                        <span class="card-text">
+                            Маршрутные такси и автобусы, идущие в сторону Старого города. 
+                            От остановки "Рынок" минута ходьбы.
+                        </span>
+                    </p>
+                </div>
+
+                <div class="contact-info">
+                    <p class="contact-label">Карта:</p>
+                    <!-- сюда позже можно вставить iframe карты -->
+                    <div style="border-radius:12px; overflow:hidden;">
+    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A73adfa63d458fe77f608e65c54ce64c213c72976f3959915b790c7b8792dcf4f&amp;source=constructor" width="421" height="341" frameborder="0"></iframe>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+        <!-- ПРЕИМУЩЕСТВА -->
+    <section id="portfolio">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">Почему выбирают «Золотую нить»</h2>
+                <p class="section-sub">
+                    Собираем на себе десятки отзывов от клиентов, которые возвращаются к нам с новыми идеями и вещами.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <div class="pill">Опыт и качество</div>
+                    <h3 class="card-title">15+ лет работы</h3>
+                    <p class="card-text">
+                        Мастера с большим опытом в пошиве и ремонте одежды, аккуратная обработка и контроль качества на каждом этапе.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="pill">Индивидуальный подход</div>
+                    <h3 class="card-title">Посадка по фигуре</h3>
+                    <p class="card-text">
+                        Подстраиваем лекала под особенности фигуры, учитываем стиль, образ жизни и задачи клиента.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="pill">Удобство для клиента</div>
+                    <h3 class="card-title">Чёткие сроки и связь</h3>
+                    <p class="card-text">
+                        Реальные сроки, согласование всех деталей заранее и удобная связь через телефон и мессенджеры.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- О НАС -->
+    <section id="about">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">О ателье</h2>
+            </div>
+            <div class="about">
+                <div class="about-photo"></div>
+                <div>
+                    <p>
+                        В ателье «Золотая нить» работают опытные мастера с многолетней практикой пошива и моделирования одежды. Мы относимся к каждому заказу как к искусству, уделяя внимание каждой детали.
+                    </p>
+                    <ul class="about-list">
+                        <li>Индивидуальный подход к каждой фигуре и стилю.</li>
+                        <li>Аккуратная обработка всех швов и отделки.</li>
+                        <li>Подбор премиальных материалов под бюджет.</li>
+                        <li>Гарантия качества на все работы.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section id="contacts">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">Контактная информация</h2>
+                <p class="section-sub">
+                    Мы находимся в историческом центре Борисова. Позвоните нам или приходите в гости!
+                </p>
+            </div>
+            <div class="contacts">
+                <div class="contact-info">
+                    <p>
+                        <span class="contact-label">Адрес:</span><br />
+                        <span class="contact-value">г. Борисов, ул. Дзержинского 79, Старый город</span>
+                    </p>
+                    <p>
+                        <span class="contact-label">Телефон:</span><br />
+                        <span class="contact-value"><a href="tel:+375291237275">+375 (29) 123-72-75</a></span>
+                    </p>
+                    <p>
+                        <span class="contact-label">Время работы:</span><br />
+                        <span class="contact-value">Пн–Сб, 10:00–19:00<br />Вс — выходной</span>
+                    </p>
+                </div>
+
+                <div class="contact-info">
+                    <p>
+                        <span class="contact-label">Способы связи:</span><br />
+                        <span class="contact-value">WhatsApp, Telegram, Viber</span>
+                    </p>
+                    <p>
+                        <span class="contact-label">Дополнительная информация:</span><br />
+                        <span class="contact-value">По телефону или мессенджерам</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<button id="scroll-top" class="scroll-top">↑</button>
+
+<footer>
+    <div class="container">
+        © 2025 Ателье «Золотая нить». Все права защищены. г. Борисов
+    </div>
+</footer>
+
+<script>
+    // Smooth scroll для навигационных ссылок
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Подсветка активного пункта меню при скролле
+    window.addEventListener('scroll', () => {
+        let current = '';
+        document.querySelectorAll('section').forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 100) current = section.getAttribute('id');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+        });
+
+        // Показываем кнопку "вернуться наверх" при скролле вниз
+        const scrollTop = document.getElementById('scroll-top');
+        if (window.scrollY > 300) {
+            scrollTop.classList.add('show');
+        } else {
+            scrollTop.classList.remove('show');
+        }
+    });
+
+    // Клик на кнопку "вернуться наверх"
+    document.getElementById('scroll-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Intersection Observer для анимации появления элементов
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card, .portfolio-item').forEach(el => {
+        observer.observe(el);
+    });
+</script>
+</body>
+</html>
