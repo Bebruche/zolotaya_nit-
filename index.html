@@ -869,12 +869,28 @@
     // Подсветка активного пункта меню при скролле
     window.addEventListener('scroll', () => {
         let current = '';
-        document.querySelectorAll('section').forEach(section => {
+        const sections = document.querySelectorAll('section');
+        
+        sections.forEach(section => {
             const rect = section.getBoundingClientRect();
-            if (rect.top <= 100) current = section.getAttribute('id');
+            // Немного увеличим зону срабатывания для плавности
+            if (rect.top <= 200) {
+                current = section.getAttribute('id');
+            }
         });
+
+        // ПРОВЕРКА: Если пользователь докрутил страницу до самого низа (с погрешностью 50px)
+        if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+            // Принудительно выбираем ID последнего раздела (контакты)
+            current = sections[sections.length - 1].getAttribute('id');
+        }
+
         document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
-            a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+            if (current) {
+                a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+            } else {
+                a.classList.remove('active');
+            }
         });
 
         // Показываем кнопку "вернуться наверх" при скролле вниз
